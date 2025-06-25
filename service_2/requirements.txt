@@ -1,2 +1,4 @@
-flask==3.1.1
-prometheus_flask_exporter==0.22.4
+flask
+asgiref
+uvicorn
+prometheus_flask_exporter
