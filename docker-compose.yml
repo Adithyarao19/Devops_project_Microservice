@@ -1,0 +1,59 @@
+
+
+services:
+
+  service_1:
+    build: ./service_1
+    container_name: service_1
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "--quiet", "http://localhost:8001/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  service_2:
+    build: ./service_2
+    container_name: service_2
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 6
+
+  nginx_reverse_proxy:
+    build: ./nginx
+    container_name: nginx_reverse_proxy
+    depends_on:
+      service_1:
+        condition: service_healthy
+      service_2:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    networks:
+      - backend
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - backend
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "4000:3000"
+    networks:
+      - backend
+
+networks:
+  backend:
