@@ -3,9 +3,6 @@
 # 🚀 DevOps Observability Assignment — by Adithya A.
 
 Welcome to my mini DevOps project that ties together reverse proxy, container orchestration, and observability in a clean, modular setup. This project runs two microservices behind an NGINX reverse proxy and uses Prometheus + Grafana for monitoring.
-![Screenshot 2025-06-25 161634](https://github.com/user-attachments/assets/75998b3b-04cd-4823-a97b-8705c396d88c)
-this is the custom dashboard i have created 
-which shows service1 total requests,service 2 latancy,service 2 total requests.
 
 ---
 
@@ -91,6 +88,9 @@ Adithya\_devops\_assmt/
 * `service1_http_requests_total`
 * `flask_http_request_duration_seconds`
 * System metrics like CPU, memory, GC are scraped but here it is not necessary 
+![Screenshot 2025-06-25 161634](https://github.com/user-attachments/assets/75998b3b-04cd-4823-a97b-8705c396d88c)
+this is the custom dashboard i have created 
+which shows service1 total requests,service 2 latancy,service 2 total requests.
 
 
 
