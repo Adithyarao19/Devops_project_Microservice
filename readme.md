@@ -114,6 +114,14 @@ Each service includes Docker health checks that verify `/ping` endpoints regular
 
 I built this as part of a DevOps learning path to demonstrate my understanding of containerized environments, reverse proxying, service monitoring, and real-time visualization.
 
+To prepare the application for modern, async-compatible infrastructure, this service wraps the Flask (WSGI) app using WsgiToAsgi from asgiref. This allows it to be run under an ASGI server like Uvicorn or Hypercorn, enabling compatibility with ASGI-based middleware and observability tools.
+
+**However, please note:
+
+While the application is ASGI-wrapped, Flask remains a synchronous framework. Wrapping alone does not improve throughput or concurrency, as true async behavior requires ASGI-native frameworks like FastAPI.
+
+This architectural choice was inspired by a blog on FastAPI throughput, which highlights the importance of properly handling blocking I/O in async environments.
+**
 
 
 
