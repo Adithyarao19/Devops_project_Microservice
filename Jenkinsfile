@@ -7,10 +7,12 @@ pipeline {
 
     stages {
         stage('Clone Repo') {
-            steps {
-                git 'https://github.com/Adithyarao19/Adithya_devops_assmt.git'
-            }
-        }
+    steps {
+        git url: 'https://github.com/Adithyarao19/Adithya_devops_assmt.git',
+            branch: 'main' 
+    }
+}
+
 
         stage('Build and Start Services') {
             steps {
