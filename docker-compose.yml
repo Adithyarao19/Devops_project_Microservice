@@ -33,7 +33,7 @@ services:
       service_2:
         condition: service_healthy
     ports:
-      - "8080:80"
+      - "8085:80"
     networks:
       - backend
 
