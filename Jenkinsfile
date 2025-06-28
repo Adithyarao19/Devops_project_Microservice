@@ -6,43 +6,53 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repo') {
-    steps {
-        git url: 'https://github.com/Adithyarao19/Adithya_devops_assmt.git',
-            branch: 'main' 
-    }
-}
-
+        stage('Checkout Code') {
+            steps {
+                git url: 'https://github.com/Adithyarao19/Adithya_devops_assmt.git', branch: 'main'
+            }
+        }
 
         stage('Build and Start Services') {
             steps {
-                echo "Starting Docker Compose..."
-                sh 'docker-compose down || true'
-                sh 'docker-compose build'
-                sh 'docker-compose up -d'
+                bat 'docker-compose down || exit 0'
+                bat 'docker-compose build'
+                bat 'docker-compose up -d'
             }
         }
 
         stage('Health Check') {
             steps {
-                echo "Waiting for containers to be healthy..."
-                sh 'sleep 20'
-                sh 'docker ps --filter "health=healthy"'
+                echo "Waiting for services to start..."
+                sleep(time: 15, unit: 'SECONDS')
+
+                bat '''
+                curl -f http://localhost:8001/ping || exit /b 1
+                curl -f http://localhost:8002/ping || exit /b 1
+                '''
             }
         }
 
         stage('Prometheus Check') {
             steps {
-                echo "Scraping Prometheus target..."
-                sh 'curl -s http://localhost:9090/metrics | head -n 10'
+                bat '''
+                curl -f http://localhost:9090/metrics || exit /b 1
+                '''
             }
         }
     }
 
     post {
         always {
-            echo "Cleaning up..."
-            sh 'docker-compose down'
+            echo 'Cleaning up containers...'
+            bat 'docker-compose down'
+        }
+
+        success {
+            echo '✅ Pipeline succeeded! All services healthy.'
+        }
+
+        failure {
+            echo '❌ Pipeline failed. Please check the logs.'
         }
     }
 }
