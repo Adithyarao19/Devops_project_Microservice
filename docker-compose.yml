@@ -5,6 +5,9 @@ services:
   service_1:
     build: ./service_1
     container_name: service_1
+    ports:
+      - "8001:8001"
+    
     networks:
       - backend
     healthcheck:
@@ -16,6 +19,8 @@ services:
   service_2:
     build: ./service_2
     container_name: service_2
+    ports:
+      - "8002:8002"
     networks:
       - backend
     healthcheck:
