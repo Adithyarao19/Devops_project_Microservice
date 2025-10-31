@@ -1,6 +1,6 @@
 
 
-# 🚀 DevOps Observability Assignment — by Adithya A.
+# 🚀 DevOps Observability project — by Adithya A.
 
 Welcome to my mini DevOps project that ties together reverse proxy, container orchestration, and observability in a clean, modular setup. This project runs two microservices behind an NGINX reverse proxy and uses Prometheus + Grafana for monitoring.
 
