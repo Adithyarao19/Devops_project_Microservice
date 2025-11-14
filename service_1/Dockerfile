@@ -1,21 +1,16 @@
+FROM golang:1.22-alpine
 
-FROM golang:1.24-alpine AS builder
-WORKDIR /src
-
-
-RUN apk add --no-cache git ca-certificates
-
-
-COPY main.go
-RUN if [ -f go.mod ]; then go mod download; fi
-
+WORKDIR /app
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w" -o /out/service_1 ./...
+# Enable Go modules
+RUN go mod init service_1 || true
 
-FROM scratch
-COPY --from=builder /out/service_1 /service_1
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-EXPOSE 8080
-ENTRYPOINT ["/service_1"]
+# Add Prometheus dependencies
+RUN go get github.com/prometheus/client_golang/prometheus \
+    && go get github.com/prometheus/client_golang/prometheus/promhttp
+
+RUN go build -o main
+
+CMD ["./main"]
