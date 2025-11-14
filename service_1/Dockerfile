@@ -6,7 +6,7 @@ WORKDIR /src
 RUN apk add --no-cache git ca-certificates
 
 
-COPY go.mod go.sum ./
+COPY main.go
 RUN if [ -f go.mod ]; then go mod download; fi
 
 
